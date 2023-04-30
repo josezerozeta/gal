@@ -1,5 +1,5 @@
 # gal
 
-flex filename.lex
+flex filename.l
 gcc lex.yy.cc
 ./a.out
