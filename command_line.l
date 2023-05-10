@@ -1,6 +1,7 @@
 %{
 
 unsigned verbose;
+unsigned fname;
 char *progName;
 
 int myinput(char *buf, int max);
@@ -9,7 +10,11 @@ int myinput(char *buf, int max);
 
 %}
 
+%s FNAME
+
 %%
+
+[ ]+
 
 -h      |
 "-?"    |
@@ -17,7 +22,13 @@ int myinput(char *buf, int max);
 
 -v          |
 -verbose    { printf("verbose mode is on\n"); verbose = 1; }
-.       ECHO;
+
+-f      |
+-file   { BEGIN FNAME; fname = 1; } 
+
+<FNAME>[^ ]+ { printf("use file %s\n", yytext); BEGIN 0; fname = 2; }
+
+[^ ]+       ECHO;
 
 %%
 char **targv;
@@ -35,6 +46,11 @@ int main(int argc, char **argv)
     targv = argv + 1;
     arglim = argv + argc;
     yylex();
+    if (fname < 2) {
+        printf("No filename given\n");
+        return 1;
+    }
+
     return 0;
 }
 
