@@ -28,6 +28,6 @@ int main(int argc, char **argv)
 
 int yyerror(const char *s)
 {
-  fprintf(stderr, "%s\n", s);
-  return 0;
+    fprintf(stderr, "%s\n", s);
+    return 0;
 }
